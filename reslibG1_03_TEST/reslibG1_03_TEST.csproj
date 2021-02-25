@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0794A4EB-2DEA-40D0-859C-6E5FF4C0ED2D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>reslibG1_03</RootNamespace>
-    <AssemblyName>reslibG1_03</AssemblyName>
+    <ProjectGuid>{9EF94CD9-51C4-48E8-98FA-89D580A1B193}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>reslibG1_03_TEST</RootNamespace>
+    <AssemblyName>reslibG1_03_TEST</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,18 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\App\AppUtils.cs" />
-    <Compile Include="Util\Reflection\Properties.cs" />
-    <Compile Include="Util\Reflection\ReflectionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cryptography\" />
-    <Folder Include="IO\" />
-    <Folder Include="MVVM\" />
-    <Folder Include="Network\" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\reslibG1_03\reslibG1_03.csproj">
+      <Project>{0794a4eb-2dea-40d0-859c-6e5ff4c0ed2d}</Project>
+      <Name>reslibG1_03</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
