@@ -24,7 +24,7 @@ namespace reslibG1_03.Util.Progress
         public ProgressResult Result { get => _Result; set => _Result = value; }
 
         public TimeSpan ElapsedTime { get => _ElapsedTime; set => _ElapsedTime = value; }
-        public TimeSpan EstimatedTimeRemaining { get => _EstimatedTimeRemaining; set => _EstimatedTimeRemaining = value; }
+        public TimeSpan RemainingTime { get => _EstimatedTimeRemaining; set => _EstimatedTimeRemaining = value; }
 
         public long ProcessingSpeed { get => _ProcessingSpeed; set => _ProcessingSpeed = value; }
 
@@ -41,7 +41,7 @@ namespace reslibG1_03.Util.Progress
                 if (prg.TotalSize == this.TotalSize &&
                     prg.CurrentSize == this.CurrentSize &&
                     prg.ElapsedTime == this.ElapsedTime &&
-                    prg.EstimatedTimeRemaining == this.EstimatedTimeRemaining &&
+                    prg.RemainingTime == this.RemainingTime &&
                     prg.ProcessingSpeed == this.ProcessingSpeed &&
                     prg.Result == this.Result)
 
@@ -61,7 +61,7 @@ namespace reslibG1_03.Util.Progress
                 hash = (hash * 37) + Result.GetHashCode();
                 hash = (hash * 37) + ProcessingSpeed.GetHashCode();
                 hash = (hash * 37) + ElapsedTime.GetHashCode();
-                hash = (hash * 37) + EstimatedTimeRemaining.GetHashCode();
+                hash = (hash * 37) + RemainingTime.GetHashCode();
 
                 return hash;
             }

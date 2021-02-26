@@ -46,17 +46,21 @@ namespace reslibG1_03.Logging
         public Logger(LoggerOptions[] options) : this(null, options) { }
 
         public Logger(string output, LoggerOptions[] options) => Initialize(output, options);
+        public Logger(string output, bool append) => Initialize(output, null, append);
 
 
 
-        internal void Initialize(string output, LoggerOptions[] options)
+        internal void Initialize(string output, LoggerOptions[] options, bool append = false)
         {
             FileOutput = output;
             Options = options;
 
-            LogStream = new(FileOutput, FileMode.Create, FileAccess.Write, FileShare.Write);
+            LogStream = new(FileOutput, append ? FileMode.OpenOrCreate : FileMode.Create, FileAccess.Write, FileShare.Write);
             LogWriter = new(LogStream, Encoding.Unicode, 1024 * 64);
             LogWriter.AutoFlush = true;
+
+            if (append)
+                LogStartup();
         }
 
 
@@ -69,6 +73,7 @@ namespace reslibG1_03.Logging
             if (message is null)
             {
                 var sb = new StringBuilder();
+                sb.AppendLine();
                 sb.Append('-', 100).AppendLine();
                 sb.Append('-', 25).Append(" || Initializing Logger from " + AppUtils.GetCurrentExeName()).AppendLine();
                 sb.Append('-', 25).Append(" || Start time: " + DateTime.Now.ToString()).AppendLine();
