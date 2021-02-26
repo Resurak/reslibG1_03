@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace reslibG1_03.Logging
 {
-    public class Logger
+    public sealed class Logger
     {
         private const string defaultFileName = "outputLog.txt";
+        private readonly object _lock = new object();
 
 
         private StreamWriter LogWriter = null;
@@ -68,8 +69,9 @@ namespace reslibG1_03.Logging
             if (message is null)
             {
                 var sb = new StringBuilder();
-                sb.Append('-', 25).Append(" || Initializing Logger").AppendLine();
-                sb.Append('-', 25).Append(" || Start time: " + DateTime.Now.ToLongDateString()).AppendLine();
+                sb.Append('-', 100).AppendLine();
+                sb.Append('-', 25).Append(" || Initializing Logger from " + AppUtils.GetAssemblyName()).AppendLine();
+                sb.Append('-', 25).Append(" || Start time: " + DateTime.Now.ToString()).AppendLine();
                 sb.Append('-', 100).AppendLine();
 
                 log = sb.ToString();
@@ -105,45 +107,53 @@ namespace reslibG1_03.Logging
 
         internal void ProcessLog(string log, LogType type = LogType.INFO, Exception e = null)
         {
-            var sb = new StringBuilder();
-            var time = DateTime.Now.ToString();
-            var divisor = " || ";
-
-            sb.Append($"{(noTime ? "" : (time + divisor))}{(noInfo ? "" : ($"[{type.ToString()}]" + divisor))}");
-            sb.Append(log ?? "_NO-MESSAGE_");
-
-            if (e is not null)
+            lock (_lock)
             {
-                sb.Append("\n").Append("Exception message: ").Append(e.Message);
-                sb.Append("\n").Append("Exception StackTrace: ").Append("\n").Append(e.StackTrace);
-            }
+                var sb = new StringBuilder();
+                var time = DateTime.Now.ToString();
+                var divisor = " || ";
 
-            SaveLog(sb);
+                sb.Append($"{(noTime ? "" : (time + divisor))}{(noInfo ? "" : ($"[{type.ToString()}]" + divisor))}");
+                sb.Append(log ?? "_NO-LOG_");
+
+                if (e is not null)
+                {
+                    sb.Append("\n").Append('-', 25);
+                    sb.Append("\n").Append("Exception message: ").Append(e.Message);
+                    sb.Append("\n").Append("Exception StackTrace: ").Append("\n").Append(e.StackTrace);
+                    sb.Append("\n").Append('-', 25);
+                }
+
+                SaveLog(sb);
+            }
         }
 
 
         internal void ProcessLog<T>(T obj, string objName, bool allowAll, Type[] types, string log, LogType type = LogType.INFO, Exception e = null)
         {
-            var sb = new StringBuilder();
-            var time = DateTime.Now.ToString();
-            var divisor = " || ";
-
-            sb.Append($"{(noTime ? "" : (time + divisor))}{(noInfo ? "" : ($"[{type.ToString()}]" + divisor))}");
-            sb.Append(log ?? $"Logging values of {objName ?? "1_no-name-provided_"}").AppendLine();
-            sb.Append('-', 100).AppendLine();
-
-            var valueList = ReflectionUtils.GetValuesFromObj(obj);
-
-            foreach (var prop in valueList)
+            lock (_lock)
             {
-                sb.Append('-', prop.NestedIndex + 1).Append(divisor)
-                    .Append("Type: ").Append(prop.Type).Append(divisor)
-                    .Append("Name: ").Append(prop.Name).Append(divisor)
-                    .Append("Value: ").Append(prop.Value)
-                    .AppendLine();
-            }
+                var sb = new StringBuilder();
+                var time = DateTime.Now.ToString();
+                var divisor = " || ";
 
-            SaveLog(sb);
+                sb.Append($"{(noTime ? "" : (time + divisor))}{(noInfo ? "" : ($"[{type.ToString()}]" + divisor))}");
+                sb.Append(log ?? $"Logging values of {objName ?? "1_no-name-provided_"}").AppendLine();
+                sb.Append('-', 100).AppendLine();
+
+                var valueList = ReflectionUtils.GetValuesFromObj(obj);
+
+                foreach (var prop in valueList)
+                {
+                    sb.Append('-', prop.NestedIndex + 1).Append(divisor)
+                        .Append("Type: ").Append(prop.Type).Append(divisor)
+                        .Append("Name: ").Append(prop.Name).Append(divisor)
+                        .Append("Value: ").Append(prop.Value)
+                        .AppendLine();
+                }
+
+                SaveLog(sb);
+            }
         }
 
 

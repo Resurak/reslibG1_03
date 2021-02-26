@@ -6,9 +6,27 @@ using System.Threading.Tasks;
 
 namespace reslibG1_03.Logging
 {
-    public class Log
+    public sealed class Log
     {
-        internal static Logger logger = new();
+        private static volatile Logger _logger = null;
+        private static readonly object _lock = new object();
+
+        private static Logger logger
+        {
+            get
+            {
+                if (_logger is null)
+                    lock (_lock)
+                        if (_logger is null)
+                            _logger = new();
+
+                return _logger;
+            }
+        }
+
+
+
+        public static void StartLogging() => logger.LogStartup();
 
         public static void Info(string message) => logger.LogInfo(message);
 
