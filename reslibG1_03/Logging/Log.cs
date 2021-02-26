@@ -38,12 +38,22 @@ namespace reslibG1_03.Logging
             _logger = new(filePath, options);
         }
 
+        public static void SetConfig(string filePath, bool append)
+        {
+            if (_logger is not null)
+                _logger.Dispose();
+
+            _logger = new(filePath, append);
+        }
+
         public static void StartLogging() => logger.LogStartup();
         public static void StartLogging(string message) => logger.LogStartup(message);
 
         public static void Info(string message) => logger.LogInfo(message);
+        public static void Info(object obj) => logger.LogInfo(obj.ToString());
 
         public static void Message(string message) => logger.LogMessage(message);
+        public static void Message(object obj) => logger.LogMessage(obj.ToString());
 
         public static void Error(string message) => logger.LogError(message);
         public static void Error(string message, Exception e) => logger.LogError(message, e);

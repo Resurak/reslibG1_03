@@ -46,6 +46,7 @@ namespace reslibG1_03.Logging
         public Logger(LoggerOptions[] options) : this(null, options) { }
 
         public Logger(string output, LoggerOptions[] options) => Initialize(output, options);
+
         public Logger(string output, bool append) => Initialize(output, null, append);
 
 

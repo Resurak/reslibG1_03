@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace reslibG1_03.Logging.ExceptionLogging
+namespace reslibG1_03.Logging.Internal
 {
     public class InternalLogger
     {

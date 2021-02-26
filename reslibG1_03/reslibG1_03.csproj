@@ -43,11 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\StreamHandler.cs" />
-    <Compile Include="Logging\ExceptionLogging\InternalLogger.cs" />
+    <Compile Include="Logging\Internal\InternalLogger.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\App\AppUtils.cs" />
+    <Compile Include="Util\Extensions\ExtensionMethods.cs" />
+    <Compile Include="Util\FileUtils.cs" />
     <Compile Include="Util\Progress\BaseProgress.cs" />
     <Compile Include="Util\Progress\IBaseProgressHandler.cs" />
     <Compile Include="Util\Progress\IBaseProgressReporter.cs" />

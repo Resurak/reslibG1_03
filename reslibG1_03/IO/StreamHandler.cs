@@ -1,4 +1,4 @@
-﻿using reslibG1_03.Logging.ExceptionLogging;
+﻿using reslibG1_03.Logging.Internal;
 using reslibG1_03.Util.Progress;
 using System;
 using System.Collections.Generic;
@@ -11,12 +11,12 @@ namespace reslibG1_03.IO
 {
     public class StreamHandler : ProgressHandler
     {
-        public long InputSize { get; set; } = -1;
         public bool ReportProgress { get; set; } = true;
-        public int BufferSize { get; set; } = 1024 * 64;
+        public int BufferSize { get; set; } = 1024 * 1024 *64;
+        public long InputSize { get; set; } = -1;
 
 
-        public void Write(Stream s1, Stream s2)
+        public void WriteInToOut(Stream s1, Stream s2)
         {
             if (s1 is null)
                 throw new ArgumentNullException("Stream1 is null");
@@ -35,6 +35,7 @@ namespace reslibG1_03.IO
             WriteInternal(s1, s2);
         }
 
+
         private protected void WriteInternal(Stream s1, Stream s2)
         {
             bool completed = false;
@@ -44,7 +45,7 @@ namespace reslibG1_03.IO
                 int read = 0;
                 var buffer = new byte[BufferSize];
 
-                while ((read = s2.Read(buffer, 0, BufferSize)) > 0)
+                while ((read = s1.Read(buffer, 0, BufferSize)) > 0)
                 {
                     if (ReportProgress)
                         Progress.CurrentSize += read;

@@ -13,7 +13,7 @@ namespace reslibG1_03.Util.Progress
         private short updateInterval;
         private long precedent;
 
-        public BaseProgress Progress;
+        internal BaseProgress Progress;
 
         public event BaseProgressEventHandler ProgressChanged;
         public event BaseProgressEventHandler Completed;
@@ -27,12 +27,12 @@ namespace reslibG1_03.Util.Progress
         private TimeSpan RemainingTime { get => Progress.RemainingTime; set => Progress.RemainingTime = value; }
 
 
-        public void StartProgress() => StartProgress(-1, -1);
+        internal void StartProgress() => StartProgress(-1, -1);
 
-        public void StartProgress(long size) => StartProgress(size, -1);
+        internal void StartProgress(long size) => StartProgress(size, -1);
 
 
-        public void StartProgress(long size, short interval)
+        internal void StartProgress(long size, short interval)
         {
             Progress = new();
             Progress.Result = ProgressResult.Processing;
@@ -61,7 +61,7 @@ namespace reslibG1_03.Util.Progress
 
             ElapsedTime = TimeSpan.FromMilliseconds(ElapsedTime.TotalMilliseconds + updateInterval);
 
-            if (total > 0)
+            if (total > 0 && current > 0 && processingSpeed > 0)
                 RemainingTime = TimeSpan.FromSeconds(Math.Round((double)((total - current) / processingSpeed)));
 
             precedent = current;
@@ -70,7 +70,7 @@ namespace reslibG1_03.Util.Progress
         }
 
 
-        public void StopProgress(bool failed)
+        internal void StopProgress(bool failed)
         {
             internalTimer.Stop();
 

@@ -27,6 +27,7 @@ namespace reslibG1_03.Util.Progress
         public TimeSpan RemainingTime { get => _EstimatedTimeRemaining; set => _EstimatedTimeRemaining = value; }
 
         public long ProcessingSpeed { get => _ProcessingSpeed; set => _ProcessingSpeed = value; }
+        public long AverageSpeedPerSecond { get => _CurrentSize > 0 ? (long)(_CurrentSize / (ElapsedTime.TotalMilliseconds / 1000)) : 0; }
 
 
         public override bool Equals(object obj)
