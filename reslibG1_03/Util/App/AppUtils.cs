@@ -27,7 +27,7 @@ namespace reslibG1_03.Util.App
             return Path.Combine(new FileInfo(new Uri(Assembly.GetEntryAssembly().GetName().CodeBase).AbsolutePath).Directory.FullName, file);
         }
 
-        public static string GetAssemblyName()
+        public static string GetCurrentExeName()
         {
             return Path.GetFileName(Assembly.GetEntryAssembly().GetName().CodeBase);
         }

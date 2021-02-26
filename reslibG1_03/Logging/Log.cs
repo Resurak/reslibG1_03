@@ -1,5 +1,7 @@
-﻿using System;
+﻿using reslibG1_03.Util.App;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +27,19 @@ namespace reslibG1_03.Logging
         }
 
 
+        public static void SetConfig(string filePath) => SetConfig(filePath, null);
+
+        public static void SetConfig(string filePath, LoggerOptions[] options)
+        {
+            if (filePath is null || filePath == string.Empty)
+                throw new ArgumentNullException(nameof(filePath));
+
+            _logger.Dispose();
+            _logger = new(filePath, options);
+        }
 
         public static void StartLogging() => logger.LogStartup();
+        public static void StartLogging(string message) => logger.LogStartup(message);
 
         public static void Info(string message) => logger.LogInfo(message);
 
@@ -42,5 +55,10 @@ namespace reslibG1_03.Logging
         public static void Fatal(string message, Exception e) => logger.LogFatal(message, e);
 
         public static void Exception(string message, Exception e) => logger.LogException(message, e);
+
+        public static void Values<T>(T obj) => logger.LogValues(obj);
+        public static void Values<T>(T obj, string objName, string log = null) => logger.LogValues(obj, objName, log);
+        public static void Values<T>(T obj, string objName, bool allowAllTypes, string log = null) => logger.LogValues(obj, objName, allowAllTypes, log);
+        public static void Values<T>(T obj, string objName, Type[] allowedTypes, string log = null) => logger.LogValues(obj, objName, allowedTypes, log);
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace reslibG1_03.Logging
 {
-    public sealed class Logger
+    public sealed class Logger : IDisposable
     {
         private const string defaultFileName = "outputLog.txt";
         private readonly object _lock = new object();
@@ -70,7 +70,7 @@ namespace reslibG1_03.Logging
             {
                 var sb = new StringBuilder();
                 sb.Append('-', 100).AppendLine();
-                sb.Append('-', 25).Append(" || Initializing Logger from " + AppUtils.GetAssemblyName()).AppendLine();
+                sb.Append('-', 25).Append(" || Initializing Logger from " + AppUtils.GetCurrentExeName()).AppendLine();
                 sb.Append('-', 25).Append(" || Start time: " + DateTime.Now.ToString()).AppendLine();
                 sb.Append('-', 100).AppendLine();
 
@@ -160,6 +160,23 @@ namespace reslibG1_03.Logging
 
         internal void SaveLog(string log) => LogWriter.WriteLine(log);
         internal void SaveLog(object log) => LogWriter.WriteLine(log);
+
+
+
+        public void Dispose()
+        {
+            if (LogStream is not null)
+            {
+                LogStream.Close();
+                LogStream.Dispose();
+            }
+
+            if (LogWriter is not null)
+            {
+                LogWriter.Close();
+                LogWriter.Dispose();
+            }
+        }
     }
 
 
