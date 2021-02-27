@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace reslibG1_03.Logging.Internal
 {
-    public class InternalLogger
+    public class DebugLog
     {
         private static volatile Logger _logger = null;
         private static readonly object _lock = new object();
@@ -20,7 +20,7 @@ namespace reslibG1_03.Logging.Internal
                 if (_logger is null)
                     lock (_lock)
                         if (_logger is null)
-                            _logger = new(Path.Combine(AppUtils.AppDirectoryPath(), "internal_Log.txt"));
+                            _logger = new(Path.Combine(AppUtils.AppDirectoryPath(), "debugLog.txt"));
 
                 return _logger;
             }

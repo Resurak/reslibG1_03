@@ -56,12 +56,18 @@ namespace reslibG1_03.Logging
             FileOutput = output;
             Options = options;
 
-            LogStream = new(FileOutput, append ? FileMode.OpenOrCreate : FileMode.Create, FileAccess.Write, FileShare.Write);
-            LogWriter = new(LogStream, Encoding.Unicode, 1024 * 64);
-            LogWriter.AutoFlush = true;
-
             if (append)
+            {
+                LogWriter = new(output, append, Encoding.Unicode);
+                LogWriter.AutoFlush = true;
                 LogStartup();
+            }
+            else
+            {
+                LogStream = new(FileOutput, FileMode.Create, FileAccess.Write, FileShare.Write);
+                LogWriter = new(LogStream, Encoding.Unicode, 1024 * 64);
+                LogWriter.AutoFlush = true;
+            }
         }
 
 

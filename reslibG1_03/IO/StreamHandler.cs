@@ -12,7 +12,7 @@ namespace reslibG1_03.IO
     public class StreamHandler : ProgressHandler
     {
         public bool ReportProgress { get; set; } = true;
-        public int BufferSize { get; set; } = 1024 * 1024 *64;
+        public int BufferSize { get; set; } = 1024 * 64;
         public long InputSize { get; set; } = -1;
 
 
@@ -24,9 +24,9 @@ namespace reslibG1_03.IO
             if (s2 is null)
                 throw new ArgumentNullException("Stream2 is null");
 
-            long size = -1;
+            long size = InputSize;
 
-            if (s1.CanSeek | InputSize < 0)
+            if (s1.CanSeek && size < 0)
                 size = s1.Length;
 
             if (ReportProgress)
@@ -57,15 +57,16 @@ namespace reslibG1_03.IO
             }
             catch (Exception e)
             {
-                InternalLogger.Exception("Writing streams failed", e);
+                DebugLog.Exception("Writing streams failed", e);
                 throw;
             }
             finally
             {
-                if (completed)
-                    OnCompletion();
-                else
-                    OnFailed();
+                if (ReportProgress)
+                    if (completed)
+                        OnCompletion();
+                    else
+                        OnFailed();
             }
         }
     }

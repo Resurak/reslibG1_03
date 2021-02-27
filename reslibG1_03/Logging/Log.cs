@@ -31,10 +31,9 @@ namespace reslibG1_03.Logging
 
         public static void SetConfig(string filePath, LoggerOptions[] options)
         {
-            if (filePath is null || filePath == string.Empty)
-                throw new ArgumentNullException(nameof(filePath));
+            if (_logger is not null)
+                _logger.Dispose();
 
-            _logger.Dispose();
             _logger = new(filePath, options);
         }
 
