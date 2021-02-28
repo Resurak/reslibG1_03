@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\BaseCrypt.cs" />
     <Compile Include="IO\StreamHandler.cs" />
     <Compile Include="Logging\Internal\DebugLog.cs" />
     <Compile Include="Logging\Log.cs" />
@@ -59,7 +60,8 @@
     <Compile Include="Util\Reflection\ReflectionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cryptography\" />
+    <Folder Include="Cryptography\File\" />
+    <Folder Include="Cryptography\Hash\" />
     <Folder Include="MVVM\" />
     <Folder Include="Network\" />
   </ItemGroup>

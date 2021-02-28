@@ -19,6 +19,8 @@ namespace reslibG1_03_TEST
             Log.SetConfig(null, true);
             Log.Info("starting streamTest");
 
+            Log.Message("ciao");
+
             streamTest();
 
             Console.WriteLine("done");
@@ -33,15 +35,15 @@ namespace reslibG1_03_TEST
             //var file1 = @"C:\Users\Daniele\Desktop\Windows.iso";
             //var file2 = @"C:\Users\Daniele\Desktop\Windows copied.iso";
 
-            //var file1 = @"C:\Users\Daniele\Desktop\test.mp4";
-            //var file2 = @"C:\Users\Daniele\Desktop\test copied.mp4";
+            var file1 = @"C:\Users\Daniele\Desktop\test.mp4";
+            var file2 = @"C:\Users\Daniele\Desktop\test copied.mp4";
 
-            var file1 = @"D:\sc11960-NMSC.part1.rar";
-            var file2 = @"D:\sc11960-NMSC.part1 copied.rar";
-            var file3 = @"D:\sc11960-NMSC.part1 copied 2.rar";
+            //var file1 = @"D:\sc11960-NMSC.part1.rar";
+            //var file2 = @"D:\sc11960-NMSC.part1 copied.rar";
+            //var file3 = @"D:\sc11960-NMSC.part1 copied 2.rar";
 
-            using (var s1 = new FileStream(file2, FileMode.Open, FileAccess.Read, FileShare.Read, 512 * 1024, FileOptions.SequentialScan))
-            using (var s2 = new FileStream(file3, FileMode.Create, FileAccess.Write, FileShare.Write, 512 * 1024, FileOptions.SequentialScan))
+            using (var s1 = new FileStream(file1, FileMode.Open, FileAccess.Read, FileShare.Read, 512 * 1024, FileOptions.SequentialScan))
+            using (var s2 = new FileStream(file2, FileMode.Create, FileAccess.Write, FileShare.Write, 512 * 1024, FileOptions.SequentialScan))
             using (var handler = new StreamHandler())
             {
                 handler.ProgressChanged += (sender, e) => Console.WriteLine("Speed: " + LongToString(e.ProcessingSpeed) + "/s. Remaining: " + e.RemainingTime.ToString(@"hh\:mm\:ss"));

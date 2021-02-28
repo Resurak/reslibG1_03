@@ -58,7 +58,7 @@ namespace reslibG1_03.Logging
 
             if (append)
             {
-                LogWriter = new(output, append, Encoding.Unicode);
+                LogWriter = new(FileOutput, append, Encoding.Unicode, 1024 * 64);
                 LogWriter.AutoFlush = true;
                 LogStartup();
             }
