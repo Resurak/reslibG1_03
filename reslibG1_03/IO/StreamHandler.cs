@@ -1,4 +1,5 @@
 ﻿using reslibG1_03.Logging.Internal;
+using reslibG1_03.Util.Common;
 using reslibG1_03.Util.Progress;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace reslibG1_03.IO
 {
-    public class StreamHandler : ProgressHandler
+    public class StreamHandler : ProgressHandler, IAbortable
     {
         public bool ReportProgress { get; set; } = true;
         public int BufferSize { get; set; } = 1024 * 64;
         public long InputSize { get; set; } = -1;
+
+        internal bool Writing = false;
+        internal bool RequestAbort = false;
+
+        internal event EventHandler Aborted;
 
 
         public void WriteInToOut(Stream s1, Stream s2)
@@ -38,6 +44,9 @@ namespace reslibG1_03.IO
 
         private protected void WriteInternal(Stream s1, Stream s2)
         {
+            if (RequestAbort)
+                throw new InvalidOperationException("Can't start writing streams with an aborted instance");
+            
             bool completed = false;
 
             try
@@ -45,8 +54,13 @@ namespace reslibG1_03.IO
                 int read = 0;
                 var buffer = new byte[BufferSize];
 
+                Writing = true;
+
                 while ((read = s1.Read(buffer, 0, BufferSize)) > 0)
                 {
+                    if (RequestAbort)
+                        break;
+
                     if (ReportProgress)
                         Progress.CurrentSize += read;
 
@@ -62,12 +76,23 @@ namespace reslibG1_03.IO
             }
             finally
             {
-                if (ReportProgress)
+                Writing = false;
+
+                if (ReportProgress && !RequestAbort)
                     if (completed)
                         OnCompletion();
                     else
                         OnFailed();
             }
+        }
+
+        public void Abort()
+        {
+            RequestAbort = true;
+
+            while (Writing) { }
+
+            Aborted?.Invoke(this, EventArgs.Empty);
         }
     }
 }
