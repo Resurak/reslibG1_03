@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Cryptography\BaseCrypt.cs" />
     <Compile Include="IO\StreamHandler.cs" />
+    <Compile Include="IO\ThreadedStreamHandler.cs" />
     <Compile Include="Logging\Internal\DebugLog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\Logger.cs" />

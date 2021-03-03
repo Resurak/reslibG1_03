@@ -16,15 +16,55 @@ namespace reslibG1_03_TEST
     {
         static void Main(string[] args)
         {
-            Log.SetConfig(null, true);
-            Log.Info("starting streamTest");
+            //Log.SetConfig(null, true);
+            //Log.Info("starting streamTest");
 
-            Log.Message("ciao");
+            //Log.Message("ciao");
 
-            streamTest();
+            //streamTest();
+
+            multiThreadTest();
 
             Console.WriteLine("done");
             Console.ReadKey();
+        }
+
+        private static void multiThreadTest()
+        {
+            Console.WriteLine("starting multi threading test");
+
+            var sw = new Stopwatch();
+            sw.Start();
+
+            //var file1 = @"C:\Users\Daniele\Desktop\Windows.iso";
+            //var file2 = @"C:\Users\Daniele\Desktop\Windows copied.iso";
+
+            var file1 = @"C:\Users\Daniele\Desktop\test.mp4";
+            var file2 = @"C:\Users\Daniele\Desktop\test copied.mp4";
+
+            //var file1 = @"D:\sc11960-NMSC.part1.rar";
+            //var file2 = @"D:\sc11960-NMSC.part1 copied.rar";
+            //var file3 = @"D:\sc11960-NMSC.part1 copied 2.rar";
+
+            using (var s1 = new FileStream(file1, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 64, true))
+            using (var s2 = new FileStream(file2, FileMode.Create, FileAccess.Write, FileShare.Write, 1024 * 64, true))
+            using (var handler = new ThreadedStreamHandler())
+            {
+                handler.ProgressChanged += (sender, e) => Console.WriteLine("Speed: " + LongToString(e.ProcessingSpeed) + "/s. Remaining: " + e.RemainingTime.ToString(@"hh\:mm\:ss"));
+                handler.Completed += (sender, e) =>
+                {
+                    Console.WriteLine("Completed, elapsed: " + e.ElapsedTime.ToString(@"hh\:mm\:ss"));
+                    Console.WriteLine("Average: " + LongToString(e.AverageSpeedPerSecond) + "/s");
+
+                    Log.Info("file copied in " + e.ElapsedTime.TotalMilliseconds + "ms");
+                    Log.Info("average speed: " + LongToString(e.AverageSpeedPerSecond));
+                };
+
+                handler.MT_Stream(s1, s2, 4);
+            }
+
+            sw.Stop();
+            Console.WriteLine("total time: " + sw.ElapsedMilliseconds + "ms");
         }
 
         static void streamTest()

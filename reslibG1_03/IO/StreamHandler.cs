@@ -42,6 +42,12 @@ namespace reslibG1_03.IO
         }
 
 
+        public void WriteInToOutMultiThread(Stream s1, Stream s2, int parts)
+        {
+
+        }
+
+
         private protected void WriteInternal(Stream s1, Stream s2)
         {
             if (RequestAbort)
